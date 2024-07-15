@@ -1,2 +1,3 @@
 # zimploy
-Revolutionary professional networking platform
+A revolutionary professional networking platform for the Zimbabwean work industry.
+
