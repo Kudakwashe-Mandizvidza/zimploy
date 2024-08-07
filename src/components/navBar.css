@@ -1,0 +1,37 @@
+.drawer {
+    display: flex;
+    flex-wrap: wrap;
+    width: 240px;
+    color: blue;
+}
+
+
+
+.search-bar {
+   
+    padding: 8px;
+    margin-right: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 300px;
+    height: 23px;
+    justify-self: center;
+    font-size: 14px;
+    outline: none;
+}
+
+
+.search {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 300px;
+    align-items: center;
+}
+
+
+
+
+.message-button {
+    padding-right: 5px;
+    color: #fff;
+}
