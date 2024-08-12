@@ -39,20 +39,21 @@ import { LatestJobs } from "./DashboardItems/LatestJobs";
 import { JobOffers } from "./DashboardItems/JobOffers";
 import { Applicants } from "./DashboardItems/Applicants";
 import { EducationForm } from "./components/applicationForms/EducationForm";
+import JobExperienceForms from "./components/applicationForms/JobExperienceForm";
 
 function App() {
   const [profile, setProfile] = useState({
-    userName:'',
-    professionTitle:'',
-    bio:'',
-    address:'',
-    website:'',
-    employmentStatus:'',
-    keySkills:'',
-    jobExperience:'',
-    education:'',
-    profileImage:'',
-    coverImage:''
+    userName: "",
+    professionTitle: "",
+    bio: "",
+    address: "",
+    website: "",
+    employmentStatus: "",
+    keySkills: "",
+    jobExperience: "",
+    education: "",
+    profileImage: "",
+    coverImage: "",
   });
   return (
     <Router>
@@ -61,10 +62,23 @@ function App() {
         <Route path="/category" element={<Category />} />
         <Route path="/category/jobList" element={<JobList />} />
         <Route path="/:userId/jobs" element={<UserJobs />} />
-        <Route path="/:userId/profile" element={<Profile profile={profile} />} />
-        <Route path="/:userId/profileForm" element={<ProfileForm setProfile={setProfile} />} />
-        <Route path="/:userId/profileForm/educationInput" element={<EducationForm />}/>
-        <Route path="/connections" element={<ConnectionList/>}/>
+        <Route
+          path="/:userId/profile"
+          element={<Profile profile={profile} />}
+        />
+        <Route
+          path="/:userId/profileForm"
+          element={<ProfileForm setProfile={setProfile} />}
+        />
+        <Route
+          path="/:userId/profileForm/educationInput"
+          element={<EducationForm />}
+        />
+        <Route
+          path="/:userId/profileForm/jobExperienceForm"
+          element={<JobExperienceForms />}
+        />
+        <Route path="/connections" element={<ConnectionList />} />
         <Route path="/post" element={<Post />} />
         <Route path="/post/mypost" element={<UserJobs />} />
         <Route path="/post/newjob" element={<NewJob />} />
@@ -75,10 +89,10 @@ function App() {
         <Route path="/post/mypost/:jobId" element={<UpdateJob />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/auth/login" element={<Login />} />
-        <Route path="/dashboard/appliedJobs" element={<AppliedJobs/>}/>
-        <Route path="/dashboard/latestJobs" element={<LatestJobs/>}/>
-        <Route path="/dashboard/jobOffers" element={<JobOffers/>}/>
-        <Route path="/dashboard/applicants" element={<Applicants/>}/>
+        <Route path="/dashboard/appliedJobs" element={<AppliedJobs />} />
+        <Route path="/dashboard/latestJobs" element={<LatestJobs />} />
+        <Route path="/dashboard/jobOffers" element={<JobOffers />} />
+        <Route path="/dashboard/applicants" element={<Applicants />} />
         <Route path="/auth/signup" element={<Signup />} />
         <Route
           path="/auth/signup/selectAccountType"
@@ -98,8 +112,8 @@ function App() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/wishlist" element={<WishList />} />
-        <Route path="/jobId" element={<ApplicationForm/>}/>
-        <Route path="/about" element={<AboutDeveloper/>}/>
+        <Route path="/jobId" element={<ApplicationForm />} />
+        <Route path="/about" element={<AboutDeveloper />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

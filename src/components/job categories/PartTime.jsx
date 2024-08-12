@@ -96,7 +96,7 @@ export const PartTime = () => {
           action={[
             <IconButton aria-label="settings">
               <Button onClick={handleConnection}>
-                {isConnected ? "Connected" : "Connect"}
+                {isConnected ? "Linked" : "Link"}
               </Button>
             </IconButton>,
             <IconButton aria-label="settings">

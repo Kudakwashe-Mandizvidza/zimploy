@@ -1,14 +1,10 @@
-import {
-  Button,
-  Grid,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, MenuItem, TextField, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
-import React, { useState } from "react";
+import React from "react";
 import { SimpleAppBar } from "./SimpleAppBar";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "../shared/hooks/form-hook";
+import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../shared/validators";
 
 const employmentStatusOptions = [
   "Unemployed",
@@ -20,8 +16,47 @@ const employmentStatusOptions = [
   "Actively recruiting",
 ];
 
-export const ProfileForm = ({setProfile}) => {
-  const [formData, setFormData] = useState({
+export const ProfileForm = ({ setProfile }) => {
+  const [formState, inputHandler] = useForm({
+    userName: {
+      value: "",
+      isValid: false,
+    },
+    professionTitle: {
+      value: "",
+      isValid: false,
+    },
+    bio: {
+      value: "",
+      isValid: false,
+    },
+    address: {
+      value: "",
+      isValid: false,
+    },
+    website: {
+      value: "",
+      isValid: false,
+    },
+    employmentStatus: {
+      value: "",
+      isValid: false,
+    },
+    keySkills: {
+      value: [],
+      isValid: false,
+    },
+    jobExperience: {
+      value: [],
+      isValid: false,
+    },
+    education: {
+      value: [],
+      isValid: false,
+    },
+  });
+
+  /*({
     userName: "",
     professionTitle: "",
     bio: "",
@@ -31,26 +66,23 @@ export const ProfileForm = ({setProfile}) => {
     keySkills: "",
     jobExperience: "",
     education: "",
-  });
+  });*/
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData)=>({
+    inputHandler((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
-    //form submission login goes here
-    e.preventDefault();
-    setProfile(formData);
-    navigate('/:userId/profile');
-    
-    
-    
+  const applicationSubmitHandler = (event) => {
+    event.preventDefault();
+    console.log(formState.inputs);
+    setProfile(formState);
+    navigate("/:userId/profile");
   };
 
   return (
@@ -58,8 +90,8 @@ export const ProfileForm = ({setProfile}) => {
       <SimpleAppBar pageName="Edit profile" />
       <Box
         component="form"
-        onSubmit={handleSubmit}
-        sx={{ mt: 3, marginTop: "60px", paddingBottom:'10px' }}
+        onSubmit={applicationSubmitHandler}
+        sx={{ mt: 3, marginTop: "60px", paddingBottom: "10px" }}
       >
         <Typography variant="h4" gutterBottom>
           Profile Form
@@ -71,8 +103,11 @@ export const ProfileForm = ({setProfile}) => {
               label="Username"
               variant="outlined"
               fullWidth
-              value={formData.userName}
+              value={formState.userName}
               onChange={handleChange}
+              onInput={inputHandler}
+              errorText="Please enter a valid Name"
+              validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(5)]}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -81,8 +116,11 @@ export const ProfileForm = ({setProfile}) => {
               label="Profession Title"
               variant="outlined"
               fullWidth
-              value={formData.professionTitle}
+              value={formState.professionTitle}
               onChange={handleChange}
+              onInput={inputHandler}
+              errorText="Please enter a valid title"
+              validators={[VALIDATOR_REQUIRE()]}
             />
           </Grid>
           <Grid item xs={12}>
@@ -93,8 +131,11 @@ export const ProfileForm = ({setProfile}) => {
               fullWidth
               multiline
               rows={4}
-              value={formData.bio}
+              value={formState.bio}
               onChange={handleChange}
+              onInput={inputHandler}
+              errorText="Please enter a valid bio"
+              validators={[VALIDATOR_MINLENGTH(5)]}
             />
           </Grid>
           <Grid item xs={12}>
@@ -103,8 +144,11 @@ export const ProfileForm = ({setProfile}) => {
               label="Address"
               variant="outlined"
               fullWidth
-              value={formData.address}
+              value={formState.address}
               onChange={handleChange}
+              onInput={inputHandler}
+              errorText="Please enter a valid address"
+              validators={[VALIDATOR_REQUIRE()]}
             />
           </Grid>
           <Grid item xs={12}>
@@ -113,8 +157,11 @@ export const ProfileForm = ({setProfile}) => {
               label="Website"
               variant="outlined"
               fullWidth
-              value={formData.website}
+              value={formState.website}
               onChange={handleChange}
+              onInput={inputHandler}
+              errorText="Please enter a valid website"
+              validators={[VALIDATOR_MINLENGTH(9)]}
             />
           </Grid>
           <Grid item xs={12}>
@@ -124,8 +171,11 @@ export const ProfileForm = ({setProfile}) => {
               variant="outlined"
               fullWidth
               select
-              value={formData.employmentStatus}
+              value={formState.employmentStatus}
               onChange={handleChange}
+              onInput={inputHandler}
+              errorText="Please enter a valid status"
+              validators={[VALIDATOR_REQUIRE()]}
             >
               {employmentStatusOptions.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -142,27 +192,24 @@ export const ProfileForm = ({setProfile}) => {
               fullWidth
               multiline
               rows={2}
-              value={formData.keySkills}
+              value={formState.keySkills}
               onChange={handleChange}
+              onInput={inputHandler}
+              errorText="Please enter valid skills"
+              validators={[VALIDATOR_REQUIRE()]}
             />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              name="jobExperience"
-              label="Job Experience"
-              variant="outlined"
-              fullWidth
-              multiline
-              rows={2}
-              value={formData.jobExperience}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" component={Link} to='/:userId/profileForm/educationInput' > Add Education</Button>
           </Grid>
         </Grid>
-        <Button type="submit"  variant="contained" color="primary" sx={{mt:3}}>Save</Button>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          sx={{ mt: 3 }}
+          fullWidth
+          //disabled={!formState.isValid}
+        >
+          Save
+        </Button>
       </Box>
     </Container>
   );

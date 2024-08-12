@@ -8,11 +8,52 @@ import {
   Typography,
 } from "@mui/material";
 import { Box, Container } from "@mui/system";
-import React, { useState } from "react";
+
 import { PostAppBar } from "../PostAppBar";
+import { useForm } from "../../shared/hooks/form-hook";
+import {
+  VALIDATOR_EMAIL,
+  VALIDATOR_FILE,
+  VALIDATOR_MAXLENGTH,
+  VALIDATOR_REQUIRE,
+} from "../../shared/validators";
 
 const ApplicationForm = () => {
-  const [formData, setFormData] = useState({
+  const [formState, inputHandler] = useForm(
+    {
+      name: {
+        value: "",
+        isValid: false,
+      },
+      description: {
+        value: "",
+        isValid: false,
+      },
+      phone: {
+        value: "",
+        isValid: false,
+      },
+      address: {
+        value: "",
+        isValid: false,
+      },
+      education: {
+        value: "",
+        isValid: false,
+      },
+      skills: {
+        value: "",
+        isValid: false,
+      },
+      resume:{
+        value:'',
+        isValid:false,
+      }
+    },
+    false
+  );
+
+  /*const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
@@ -20,29 +61,29 @@ const ApplicationForm = () => {
     education: "",
     skills: "",
     resume: null,
-  });
+  });**/
+
+  const applicationSubmitHandler = (event) => {
+    event.preventDefault();
+    if (!formState.resume) {
+      console.log("Upload resume");
+    }
+    console.log(formState.inputs);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    inputHandler((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
   const handleFileChange = (e) => {
-    setFormData((prevData) => ({
+    inputHandler((prevData) => ({
       ...prevData,
       resume: e.target.files[0],
     }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.resume) {
-      console.log("Upload resume");
-    }
-    console.log(formData);
   };
 
   return (
@@ -50,7 +91,7 @@ const ApplicationForm = () => {
       <PostAppBar />
       <Box
         component="form"
-        onSubmit={handleSubmit}
+        onSubmit={applicationSubmitHandler}
         sx={{ mt: 3, marginTop: "60px" }}
       >
         <Typography variant="h4" gutterBottom>
@@ -61,18 +102,25 @@ const ApplicationForm = () => {
           margin="normal"
           label="Name"
           name="name"
-          value={formData.name}
+          value={formState.name}
           onChange={handleChange}
           required
+          
+          validators={[VALIDATOR_REQUIRE()]}
+          onInput={inputHandler}
+          errorText="Please enter a valid Name"
         />
         <TextField
           fullWidth
           margin="normal"
           label="Email"
           name="email"
-          value={formData.email}
+          value={formState.email}
           onChange={handleChange}
           required
+          onInput={inputHandler}
+          validators={[VALIDATOR_EMAIL()]}
+          errorText="Please enter a valid email"
         />
         <TextField
           fullWidth
@@ -80,27 +128,35 @@ const ApplicationForm = () => {
           label="Phone"
           name="phone"
           type="tel"
-          value={formData.phone}
+          value={formState.phone}
           onChange={handleChange}
           required
+          onInput={inputHandler}
+          validators={[VALIDATOR_MAXLENGTH(11)]}
+          errorText="Please enter a valid phone number"
         />
         <TextField
           fullWidth
           margin="normal"
           label="Address"
           name="address"
-          value={formData.address}
+          value={formState.address}
           onChange={handleChange}
           required
+          onInput={inputHandler}
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter a valid address"
         />
         <FormControl fullWidth margin="normal">
           <InputLabel id="education-label">Education</InputLabel>
           <Select
             labelId="education-label"
             name="education"
-            value={formData.education}
+            value={formState.education}
             onChange={handleChange}
             required
+            onInput={inputHandler}
+            validators={[VALIDATOR_REQUIRE()]}
           >
             <MenuItem value="High School">High School</MenuItem>
             <MenuItem value="Associate Degree">Associate Degree</MenuItem>
@@ -114,17 +170,27 @@ const ApplicationForm = () => {
           margin="normal"
           label="Skills"
           name="skills"
-          value={formData.skills}
+          value={formState.skills}
           onChange={handleChange}
           required
+          onInput={inputHandler}
+          validators={[VALIDATOR_REQUIRE()]}
         />
         <Button variant="contained" component="label" sx={{ mt: 2 }}>
           Upload Resume
-          <input type="file" hidden onChange={handleFileChange} required />
+          <input
+            type="file"
+            hidden
+            onChange={handleFileChange}
+            required
+            value={formState.resume}
+            onInput={inputHandler}
+            validators={[VALIDATOR_REQUIRE(), VALIDATOR_FILE()]}
+          />
         </Button>
-        {formData.resume && (
+        {formState.resume && (
           <Typography variant="body2" sx={{ mt: 2 }}>
-            {formData.resume.name}
+            {formState.resume.name}
           </Typography>
         )}
         <Button
@@ -133,6 +199,7 @@ const ApplicationForm = () => {
           color="primary"
           sx={{ mt: 3, display: "block" }}
           fullWidth
+          disabled={!formState.isValid}
         >
           Submit
         </Button>

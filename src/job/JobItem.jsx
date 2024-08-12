@@ -97,16 +97,16 @@ export const JobItem = () => {
             </IconButton>
           }
           action={[
-            <IconButton aria-label="settings">
+            <IconButton aria-label="settings"  >
               <Button onClick={handleConnection}>
-                {isConnected ? "Connected" : "Connect"}
+                {isConnected ? "Linked" : "Link"}
               </Button>
             </IconButton>,
             <IconButton aria-label="settings">
               <MoreVert onClick={handleMenuOpen} />
             </IconButton>,
           ]}
-          title="NUKLEUS"
+          title="NUKLEUS" 
           subheader="Aug 09, 2024"
         />
         
@@ -124,7 +124,7 @@ export const JobItem = () => {
 
         <CardMedia
           component="img"
-          height='400'
+          height='250'
           sx={{objectFit:'cover',}}
           image="/assets/jobadvert.jpg"
           alt="jobadvert"

@@ -17,6 +17,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@weavy/uikit-react": "^21.1.2",
+    "axios": "^1.7.3",
     "date-fns": "^3.4.0",
     "dayjs": "^1.11.10",
     "luxon": "^3.4.4",

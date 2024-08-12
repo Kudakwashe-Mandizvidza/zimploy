@@ -82,133 +82,138 @@ export const Post = ({ props, shareText, shareUrl }) => {
     }
   };
 
-  
-
   return (
     <>
-    <li>
-
-   
-      <Container sx={{ marginBottom: "2px" }}>
-        <Card
-          sx={{
-            maxWidth: 600,
-            maxHeight: 'auto',
-            margin: "auto",
-            marginBottom: "10px",
-          }}
-        >
-          <CardHeader
-            avatar={
-              <IconButton component={Link} to="/:userId/profile">
-                <Avatar
-                  aria-label="post"
-                  sx={{ backgroundColor: "blue", cursor: "pointer" }}
-                >
-                  H
-                </Avatar>
-              </IconButton>
-            }
-            action={
-              <IconButton aria-label="settings" onClick={handleMenuOpen}>
-                <MoreVert />
-              </IconButton>
-            }
-            title="Hydrogen Bond"
-            subheader="4 May 2024"
-          />
-          <Menu
-            anchorEl={menuAnchor}
-            open={Boolean(menuAnchor)}
-            onClose={handleMenuClose}
+      <li>
+        <Container sx={{ marginBottom: "2px" }}>
+          <Card
+            sx={{
+              maxWidth: 600,
+              maxHeight: "auto",
+              margin: "auto",
+              marginBottom: "10px",
+            }}
           >
-            <MenuItem onClick={handleMenuClose} component={Link} to="/wishlist">
-              Wishlist
-            </MenuItem>
-            <MenuItem onClick={handleMenuClose}>Report</MenuItem>
-          </Menu>
-          
+            <CardHeader
+              avatar={
+                <IconButton component={Link} to="/:userId/profile">
+                  <Avatar
+                    aria-label="post"
+                    sx={{ backgroundColor: "blue", cursor: "pointer" }}
+                  >
+                    H
+                  </Avatar>
+                </IconButton>
+              }
+              action={
+                <IconButton aria-label="settings" onClick={handleMenuOpen}>
+                  <MoreVert color="primary" />
+                </IconButton>
+              }
+              title="Hydrogen Bond"
+              subheader="4 May 2024"
+            />
+            <Menu
+              anchorEl={menuAnchor}
+              open={Boolean(menuAnchor)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                onClick={handleMenuClose}
+                component={Link}
+                to="/wishlist"
+              >
+                Wishlist
+              </MenuItem>
+              <MenuItem onClick={handleMenuClose}>Report</MenuItem>
+            </Menu>
+            <Divider />
+
             <CardMedia
               component="img"
               sx={{ objectFit: "cover" }}
-              height="300"
-              src='/assets/albert.jpg'
+              height="240"
+              src="/assets/logan.jpg"
               alt="post media"
             />
-          
 
-          <CardContent>
-            <Typography variant="body1" color="text.secondary">
-              Hie, my name is Hydrogen Bond, the Founder and CEO of Zimploy, and a violin enthusiast. I hope you have a great experience on this platform and that you achieve your dreams and goals.
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="like">
-              <Favorite
-                onClick={handleLike}
-                sx={{ color: isliked ? "red" : null }}
-              />
-              <Typography sx={{ fontWeight: "bold", color: null }}>
-                {like}
+            <CardContent>
+              <Typography variant="body1" color="text.secondary">
+                Hie, my name is Hydrogen Bond, the Founder and CEO of Zimploy. I
+                hope you have a great experience on this platform and that you
+                achieve your goals, and ambitions.
               </Typography>
-            </IconButton>
-            <IconButton aria-label="comment" onClick={handleToggleDrawer}>
-              <Comment />
-              <Typography sx={{ fontWeight: "bold" }}>
-                {commentCount}
-              </Typography>
-            </IconButton>
-            <IconButton
-              aria-label="share"
-              sharetext="Check out this post"
-              shareurl={window.location.href}
-              onClick={handleShare}
-            >
-              <Share />
-            </IconButton>
-          </CardActions>
-        </Card>
-      </Container>
-
-      <div>
-        <Drawer anchor="bottom" open={drawerOpen} onClose={handleToggleDrawer} sx={{maxWidth:'600px'}} >
-          <div style={{ padding: "16px" }}>
-            <List>
-              {comments.map((comment, index) => (
-                <div key={index}>
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar />
-                    </ListItemAvatar>
-                    <ListItemText primary={comment} />
-                  </ListItem>
-                  {index !== comments.length - 1 && <Divider />}
-                </div>
-              ))}
-            </List>
-            <Divider />
-            <div style={{ marginTop: "16px" }}>
-              <TextField
-                label="Add a comment"
-                variant="outlined"
-                fullWidth
-                multiline
-                rows={3}
-                value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleCommentSubmit}
-                style={{ marginTop: "8px" }}
+            </CardContent>
+            <CardActions disableSpacing>
+              <IconButton aria-label="like">
+                <Favorite
+                  onClick={handleLike}
+                  sx={{ color: isliked ? "red" : null }}
+                />
+                <Typography sx={{ fontWeight: "bold" }}>{like}</Typography>
+              </IconButton>
+              <IconButton aria-label="comment" onClick={handleToggleDrawer}>
+                <Comment color="primary" />
+                <Typography sx={{ fontWeight: "bold" }}>
+                  {commentCount}
+                </Typography>
+              </IconButton>
+              <IconButton
+                aria-label="share"
+                sharetext="Check out this post"
+                shareurl={window.location.href}
+                onClick={handleShare}
               >
-                Comment
-              </Button>
+                <Share color="primary" />
+              </IconButton>
+            </CardActions>
+          </Card>
+        </Container>
+
+        <div>
+          <Drawer
+            anchor="bottom"
+            open={drawerOpen}
+            onClose={handleToggleDrawer}
+            sx={{ maxWidth: "600px" }}
+          >
+            <div style={{ padding: "16px" }}>
+              <List>
+                {comments.map((comment, index) => (
+                  <div key={index}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar />
+                      </ListItemAvatar>
+                      <ListItemText primary={comment} />
+                    </ListItem>
+                    {index !== comments.length - 1 && <Divider />}
+                  </div>
+                ))}
+              </List>
+              <Divider />
+              <div style={{ marginTop: "16px" }}>
+                <TextField
+                  label="Add a comment"
+                  variant="outlined"
+                  fullWidth
+                  multiline
+                  rows={3}
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleCommentSubmit}
+                  style={{ marginTop: "8px" }}
+                >
+                  Comment
+                </Button>
+              </div>
             </div>
-          </div>
-        </Drawer>
-      </div>
+          </Drawer>
+        </div>
       </li>
     </>
   );

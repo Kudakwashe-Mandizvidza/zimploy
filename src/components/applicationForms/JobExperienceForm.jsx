@@ -3,22 +3,33 @@ import { Button, Grid, IconButton, TextField, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import React, { useState } from "react";
 import { SimpleAppBar } from "../SimpleAppBar";
-import { useNavigate } from "react-router-dom";
 
-const EducationForms = ({ formData, index, handleChange, handleRemove }) => (
+const JobExperienceForm = ({
+  formState,
+  index,
+  inputHandler,
+  handleChange,
+  handleRemove,
+}) => (
   <Box
     component="form"
-    sx={{ mt: 7, p: 3, border: "1px solid #ccc", boxShadow: 3, mb: 2 }}
+    sx={{
+      mt: 7,
+      p: 3,
+      border: "1px solid #ccc",
+      borderRadius: 2,
+      boxShadow: 3,
+      mb: 2,
+    }}
   >
     <Grid
       container
       spacing={2}
       justifyContent="space-between"
       alignItems="center"
-      marginBottom={2}
     >
       <Grid item xs>
-        <Typography variant="h6">Add Education</Typography>
+        <Typography variant="h6">Add Job Experience</Typography>
       </Grid>
       <Grid item>
         <IconButton aria-label="close" onClick={() => handleRemove(index)}>
@@ -30,67 +41,55 @@ const EducationForms = ({ formData, index, handleChange, handleRemove }) => (
       <Grid item xs={12}>
         <TextField
           fullWidth
-          label="School/College name"
-          name="school"
-          value={FormData.school}
+          label="Job Title"
+          name="jobTitle"
+          value={formState.jobTitle}
           onChange={(e) => handleChange(e, index)}
+          required
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={12}>
         <TextField
           fullWidth
-          label="Field of Study"
-          name="fieldOfStudy"
-          value={formData.fieldOfStudy}
-          onChange={(e) => handleChange(e, index)}
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <TextField
-          fullWidth
-          label="Degree"
-          name="degree"
-          value={formData.degree}
+          label="Company"
+          name="company"
+          value={formState.company}
           onChange={(e) => handleChange(e, index)}
           required
         />
       </Grid>
       <Grid item xs={6}>
         <TextField
-          fullWidth
-          label="Place"
-          name="place"
-          value={formData.place}
+          label="Location"
+          name="location"
+          value={formState.location}
           onChange={(e) => handleChange(e, index)}
           required
         />
       </Grid>
       <Grid item xs={6}>
         <TextField
-          fullWidth
           label="Country"
           name="country"
-          value={formData.country}
+          value={formState.country}
           onChange={(e) => handleChange(e, index)}
           required
         />
       </Grid>
       <Grid item xs={6}>
         <TextField
-          fullWidth
-          label="From Year"
-          name="fromYear"
-          value={formData.fromYear}
+          label="From Date"
+          name="fromDate"
+          value={formState.fromDate}
           onChange={(e) => handleChange(e, index)}
           required
         />
       </Grid>
       <Grid item xs={6}>
         <TextField
-          fullWidth
-          label=" To year"
-          name="toYear"
-          value={formData.toYear}
+          label="To Date"
+          name="toDate"
+          value={formState.toDate}
           onChange={(e) => handleChange(e, index)}
           required
         />
@@ -100,7 +99,9 @@ const EducationForms = ({ formData, index, handleChange, handleRemove }) => (
           fullWidth
           label="Description"
           name="description"
+          value={formState.description}
           onChange={(e) => handleChange(e, index)}
+          required
           multiline
           rows={4}
         />
@@ -109,64 +110,59 @@ const EducationForms = ({ formData, index, handleChange, handleRemove }) => (
   </Box>
 );
 
-export const EducationForm = () => {
-  const [educationForms, setEducationForms] = useState([
+const JobExperienceForms = () => {
+  const [experienceForms, SetExperienceForms] = useState([
     {
-      school: "",
-      fieldOfStudy: "",
-      degree: "",
-      place: "",
+      jobTitle: "",
+      company: "",
+      location: "",
       country: "",
-      fromYear: "",
-      toYear: "",
+      fromDate: "",
+      toDate: "",
       description: "",
     },
   ]);
-  const navigate = useNavigate();
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
-    const updatedForms = [...educationForms];
+    const updatedForms = [...experienceForms];
     updatedForms[index][name] = value;
 
-    setEducationForms(updatedForms);
+    SetExperienceForms(updatedForms);
   };
 
   const handleAddForm = () => {
-    setEducationForms([
-      ...educationForms,
+    SetExperienceForms([
+      ...experienceForms,
       {
-        school: "",
-        fieldOfStudy: "",
-        degree: "",
-        place: "",
+        jobTitle: "",
+        company: "",
+        location: "",
         country: "",
-        fromYear: "",
-        toYear: "",
+        fromDate: "",
+        toDate: "",
         description: "",
       },
     ]);
   };
 
   const handleRemoveForm = (index) => {
-    const updatedForms = educationForms.filter((_, i) => i !== index);
-    setEducationForms(updatedForms);
+    const updatedForms = experienceForms.filter((_, i) => i !== index);
+    SetExperienceForms(updatedForms);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //handle form submission logic here
-    console.log(educationForms);
-    navigate("/:userId/profileForm");
+    console.log(experienceForms);
   };
 
   return (
     <Container maxWidth="sm">
       <SimpleAppBar />
-      {educationForms.map((formData, index) => (
-        <EducationForms
+      {experienceForms.map((formState, index) => (
+        <JobExperienceForm
           key={index}
-          formData={formData}
+          formState={formState}
           index={index}
           handleChange={handleChange}
           handleRemove={handleRemoveForm}
@@ -175,14 +171,15 @@ export const EducationForm = () => {
       <Button
         variant="contained"
         color="primary"
-        sx={{ mt: 5 }}
+        sx={{ mt: 6 }}
         onClick={handleAddForm}
       >
-        + add education
+        + Add Job Experience
       </Button>
       <Button
+        type="submit"
         variant="contained"
-        color="primary"
+        color="secondary"
         fullWidth
         sx={{ mt: 3 }}
         onClick={handleSubmit}
@@ -192,3 +189,5 @@ export const EducationForm = () => {
     </Container>
   );
 };
+
+export default JobExperienceForms;
